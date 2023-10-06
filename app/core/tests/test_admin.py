@@ -11,7 +11,7 @@ from django.test import Client
 class AdminSiteTests(TestCase):
     """Tests for Django admin."""
 
-    def serUp(self, ):
+    def setUp(self, ):
         """Create user and client."""
         self.client = Client()
         self.admin_user = get_user_model().objects.create_superuser(
@@ -22,7 +22,7 @@ class AdminSiteTests(TestCase):
         self.user = get_user_model().objects.create_user(
             email="user@example.com",
             password="rest1234",
-            name="Test User"
+            name="Test User",
         )
 
 
@@ -33,4 +33,4 @@ class AdminSiteTests(TestCase):
         res = self.client.get(url)
 
         self.assertContains(res, self.user.name)
-        self.assertContains(res, self.user.eamil)
+        self.assertContains(res, self.user.email)
