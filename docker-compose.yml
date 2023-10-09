@@ -6,6 +6,10 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+  web:
+    build:
+      context: .
+      dockerfile: birthday_reminders
 
   celery_worker:
       build:
