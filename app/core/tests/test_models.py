@@ -1,5 +1,9 @@
+"""
+Tests fot models.
+"""
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from .. import models
 
 
 class ModelTests(TestCase):
@@ -47,3 +51,20 @@ class ModelTests(TestCase):
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_birthday(self):
+        """Test creating a recipe is successful."""
+
+        user = get_user_model().objects.create_user(
+            "test@example.com",
+            "test1234",
+        )
+
+        birthday = models.Birthday.objects.create(
+            user = user,
+            name = "Test Name",
+            email = "birthday@example.com",
+            date_of_birth = "1990-05-19"
+        )
+
+        self.assertEqual(str(birthday), birthday.name)
