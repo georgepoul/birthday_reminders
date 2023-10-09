@@ -22,4 +22,8 @@ class BirthdayViewSet(viewsets.ModelViewSet):
 
         return self.queryset.filter(user=self.request.user).order_by('-id')
 
+    def perform_create(self, serializer):
+        """Create a new birthday"""
+
+        serializer.save(user= self.request.user)
 

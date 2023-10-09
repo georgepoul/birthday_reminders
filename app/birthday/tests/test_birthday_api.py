@@ -83,3 +83,38 @@ class PrivateBirthdayAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+    def test_creat_birthday(self):
+        """Test creating a birthday"""
+        self.client.force_authenticate(self.user)
+
+        payload = {
+            'name': 'example name',
+            'email': 'example5@birthday.com',
+            'date_of_birth': "1990-05-19",
+        }
+
+        res = self.client.post(BIRTHDAY_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        birthday = Birthday.objects.get(id=res.data['id'])
+        self.assertEqual(birthday.name,payload['name'])
+        self.assertEqual(birthday.email,payload['email'])
+        self.assertEqual(birthday.user, self.user)
+
+
+    def test_birthday_error_for_the_same_email(self):
+        """Test error when the email already exists in the database"""
+
+        self.client.force_authenticate(self.user)
+
+        payload = {
+            'name': 'example name',
+            'email': 'example5@birthday.com',
+            'date_of_birth': "1990-05-19",
+        }
+        self.client.post(BIRTHDAY_URL, payload)
+        res = self.client.post(BIRTHDAY_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
