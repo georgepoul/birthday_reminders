@@ -1,5 +1,5 @@
 from celery import Celery
-from datetime import timedelta
+from celery.schedules import crontab
 
 app = Celery('birthday_reminders')  # Use 'Celery' directly, not 'celery.Celery'
 
@@ -10,7 +10,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'send-birthday-emails': {
         'task': 'send_birthday_emails.send_emails',
-        'schedule': timedelta(days=1),
+        'schedule': crontab(hour=10, minute=30),
     },
 }
 

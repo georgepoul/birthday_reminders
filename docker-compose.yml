@@ -6,31 +6,32 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+
   web:
     build:
       context: .
-      dockerfile: birthday_reminders
+      dockerfile: ./Dockerfile
 
   celery_worker:
-      build:
-        context: .
-        dockerfile: birthday_reminders
-      command: celery -A your_project_name worker --loglevel=info
-      depends_on:
-        - web
-        - redis
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: celery -A app worker --loglevel=info  # Replace with your project name
+
+    # Other Celery configurations...
 
   celery_beat:
     build:
       context: .
-      dockerfile: birthday_reminders
-    command: celery -A your_project_name beat --loglevel=info
+      dockerfile: ./Dockerfile
+    command: celery -A app beat --loglevel=info
     depends_on:
       - web
       - redis
   app:
     build:
       context: .
+      dockerfile: ./Dockerfile
     ports:
       - "8000:8000"
     volumes:

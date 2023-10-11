@@ -1,7 +1,7 @@
 """
 Asynchronous task for sending birthday emails
 """
-from app.app.celery import shared_task
+from app.celery import shared_task
 from django.core.mail import send_mail
 from datetime import date
 from core.models import Birthday
